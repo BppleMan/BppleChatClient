@@ -65,9 +65,14 @@ public class LoginFrame extends JFrame
 		initUserInfoListener();
 	}
 
-	public UserInfo getUserInfo()
+	public UserInfo getUserInfo() throws Exception
 	{
+		String username = userNameText.getText();
+		if (username == null || username.equals(""))
+			throw new Exception("Not found username");
 		String pwd = String.valueOf(passWordText.getPassword());
+		if (pwd == null || pwd.equals(""))
+			throw new Exception("Not found password");
 		userInfo = new UserInfo(userNameText.getText(), pwd);
 		return userInfo;
 	}
@@ -95,6 +100,16 @@ public class LoginFrame extends JFrame
 				getContentPane().repaint();
 			}
 		};
+	}
+
+	public JTextField getUserNameText()
+	{
+		return userNameText;
+	}
+
+	public JPasswordField getPassWordText()
+	{
+		return passWordText;
 	}
 
 	public UserInfoListener getListener()
