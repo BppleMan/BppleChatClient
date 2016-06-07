@@ -10,7 +10,6 @@ import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 
 import data.TalkInfo;
-import data.UserInfo;
 import friend.FriendCard;
 import friend.FriendManege;
 
@@ -31,9 +30,9 @@ public class ChatController extends Thread
 		initWindowListener();
 	}
 
-	public void creatAChatFrame(UserInfo userInfo, String friendName)
+	public void creatAChatFrame(String userName, String friendName)
 	{
-		ChatFrame chatFrame = new ChatFrame(userInfo, friendName, sendMessage.getTalkInfoListener());
+		ChatFrame chatFrame = new ChatFrame(userName, friendName, sendMessage.getTalkInfoListener());
 		chatFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		chatFrame.setVisible(true);
 		FriendManege.getInstance().addChatFrame(chatFrame);

@@ -5,7 +5,7 @@ package chatcontroller;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.LayoutManager;
+import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -25,8 +25,6 @@ public class MessagePoor extends JPanel
 	private JScrollPane jsp = null;
 	private Message message = null;
 	private int messageCount = 0;
-	private int messageX = 0;
-	private int messageY = 0;
 	private int outputWidth = 0;
 
 	/**
@@ -34,15 +32,10 @@ public class MessagePoor extends JPanel
 	 * @param object
 	 * 
 	 */
-	public MessagePoor(LayoutManager lm, boolean b, Dimension d)
+	public MessagePoor()
 	{
-		super(lm, b);
-		setPreferredSize(d);
+		super(new GridLayout(0, 1), true);
 		setBackground(Color.WHITE);
-
-		// 每条消息的起始位置
-		messageX = messageY = 10;
-		outputWidth = (int) d.getWidth();
 	}
 
 	public void setJSP(JScrollPane jsp)
@@ -50,10 +43,9 @@ public class MessagePoor extends JPanel
 		this.jsp = jsp;
 	}
 
-	public void addMessages(TalkInfo talkInfo)
+	public void addMessages(TalkInfo talkInfo, Message.Mode mode)
 	{
-		message = new Message(talkInfo.getSendUser(), talkInfo.getMessage());
-		message.setBounds(messageX, messageY + messageCount * 90, outputWidth - 10, 80);
+		message = new Message(talkInfo.getSendUser(), talkInfo.getMessage(), mode);
 		add(message);
 		repaint();
 		setPreferredSize(new Dimension(outputWidth, 20 + (messageCount + 1) * 90));

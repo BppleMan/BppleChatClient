@@ -94,7 +94,7 @@ public class FriendController
 
 	public void CreatANewChatFrame(String friendName)
 	{
-		chatController.creatAChatFrame(userInfo, friendName);
+		chatController.creatAChatFrame(userInfo.getUserName(), friendName);
 	}
 
 }

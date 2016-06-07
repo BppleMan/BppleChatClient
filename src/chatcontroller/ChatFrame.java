@@ -15,15 +15,12 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
 import data.TalkInfo;
-import data.UserInfo;
 
 public class ChatFrame extends JFrame
 {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 2454801675788779790L;
-	private UserInfo userInfo = null;
+	private String userName = null;
 	private String friendName = null;
 	private MessagePoor outputFeature = null;
 	private TextArea inputFeature = null;
@@ -31,9 +28,9 @@ public class ChatFrame extends JFrame
 	private Message sendMessage = null;
 	private TalkInfoListener outputListener = null;
 
-	public ChatFrame(UserInfo userInfo, String friendName, TalkInfoListener outputListener)
+	public ChatFrame(String userName, String friendName, TalkInfoListener outputListener)
 	{
-		this.userInfo = userInfo;
+		this.userName = userName;
 		this.friendName = friendName;
 		this.outputListener = outputListener;
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -55,7 +52,7 @@ public class ChatFrame extends JFrame
 		inputFeature = new TextArea();
 		inputFeature.setPreferredSize(new Dimension(getWidth(), getHeight() / 3));
 		// 输出框（消息池）
-		outputFeature = new MessagePoor(null, true, new Dimension(getWidth() - 30, 0));
+		outputFeature = new MessagePoor();
 		jsp = new JScrollPane(outputFeature, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		jsp.setDoubleBuffered(true);
@@ -73,7 +70,7 @@ public class ChatFrame extends JFrame
 	public void sendMessage(TalkInfo talkInfo)
 	{
 		// 需要把消息加入到消息池
-		outputFeature.addMessages(talkInfo);
+		outputFeature.addMessages(talkInfo, Message.Mode.send);
 		outputFeature.addMessageCount();
 		// 同时需要把消息发送给socket
 		outputListener.sendMessageTOSocket(talkInfo);
@@ -83,7 +80,7 @@ public class ChatFrame extends JFrame
 	public void addMessage(TalkInfo talkInfo)
 	{
 		// 把消息加入到消息池
-		outputFeature.addMessages(talkInfo);
+		outputFeature.addMessages(talkInfo, Message.Mode.receive);
 		outputFeature.addMessageCount();
 	}
 
@@ -113,7 +110,7 @@ public class ChatFrame extends JFrame
 				}
 				else if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					TalkInfo talkInfo = new TalkInfo(userInfo.getUserName(), friendName, inputFeature.getText());
+					TalkInfo talkInfo = new TalkInfo(userName, friendName, inputFeature.getText());
 					sendMessage(talkInfo);
 				}
 			}
@@ -127,12 +124,15 @@ public class ChatFrame extends JFrame
 			@Override
 			public void componentResized(ComponentEvent e)
 			{
-				// TODO 自动生成的方法存根
-				outputFeature.setPreferredSize(new Dimension(getWidth(), getHeight() * 2 / 3));
-				inputFeature.setPreferredSize(new Dimension(getWidth(), getHeight() / 3));
-				if (sendMessage != null)
-					sendMessage.setPreferredSize(new Dimension(getWidth(), sendMessage.getHeight()));
+				jsp.getVerticalScrollBar().setValue(jsp.getVerticalScrollBar().getMaximum());
 			}
 		});
+	}
+
+	public static void main(String[] args)
+	{
+		ChatFrame frame = new ChatFrame("admin", "bppleman", null);
+		frame.setDefaultCloseOperation(ChatFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
 	}
 }

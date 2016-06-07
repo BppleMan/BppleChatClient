@@ -12,7 +12,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -45,20 +44,16 @@ public class LoginController
 		loginFrame.setVisible(true);
 
 		initListener();
-		// 获取登陆按钮
-		JButton button = loginFrame.getLoginButton();
-		button.addActionListener(loginAction);
-		// 获取注册按钮
-		button = loginFrame.getRegistButton();
-		button.addActionListener(registAction);
+		loginFrame.getLoginButton().addActionListener(loginAction);
+		loginFrame.getRegistButton().addActionListener(registAction);
 
 		loginFrame.getUserNameText().addKeyListener(enterkeyListener);
 		loginFrame.getPassWordText().addKeyListener(enterkeyListener);
 	}
 
-	public void showErrorDialog(String errorString)
+	public void showErrorDialog(String title, String errorString)
 	{
-		JDialog dialog = new JDialog(loginFrame, "非常抱歉哦～", true);
+		JDialog dialog = new JDialog(loginFrame, title, true);
 		Rectangle rect = loginFrame.getBounds();
 		rect.setLocation((int) rect.getX(), (int) (rect.getY() - rect.getHeight()));
 		dialog.setBounds(rect);
@@ -107,29 +102,29 @@ public class LoginController
 						else if (loginCommand.equals(CommandSource.passWordError))
 						{
 							// 显示一个密码错误弹窗
-							showErrorDialog("密码输错了，再好好想想～");
+							showErrorDialog("非常抱歉哦～", "密码输错了，再好好想想～");
 						}
 						else if (loginCommand.equals(CommandSource.notFoundUser))
 						{
 							// 显示一个未注册错误弹窗
-							showErrorDialog("您还没有注册哦，先注册吧");
+							showErrorDialog("非常抱歉哦～", "您还没有注册哦，先注册吧");
 						}
 					}
 					catch (IOException e1)
 					{
 						// 显示一个网络错误弹窗
-						showErrorDialog("我们的服务器正在维护，我们很快回来～");
+						showErrorDialog("非常抱歉哦～", "我们的服务器正在维护，我们很快回来～");
 					}
 				}
 				catch (Exception e2)
 				{
 					if (e2.getMessage().equals("Not found username"))
 					{
-						showErrorDialog("请正确输入用户名");
+						showErrorDialog("非常抱歉哦～", "请正确输入用户名");
 					}
 					else
 					{
-						showErrorDialog("请正确输入密码");
+						showErrorDialog("非常抱歉哦～", "请正确输入密码");
 					}
 				}
 			}
