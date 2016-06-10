@@ -18,11 +18,12 @@ import javax.swing.Timer;
 
 import data.FriendInfo;
 import data.UserInfo;
+import login.LoginController;
 
 public class FriendListFrame extends JFrame
 {
 	private UserInfo userInfo;
-	private JButton button = null;
+	private JButton logoutButton = null;
 	private ArrayList<FriendCard> friendCards = null;
 	private MouseListener mouseListener = null;
 	private Container rootCon = null;
@@ -55,29 +56,26 @@ public class FriendListFrame extends JFrame
 		myCon.setPreferredSize(new Dimension(getWidth() - 20, 0));
 		scrollPane = new JScrollPane(myCon);
 
-		button = new JButton("开始");
-		button.addActionListener(new ActionListener()
+		logoutButton = new JButton("退出登录");
+		logoutButton.addActionListener(new ActionListener()
 		{
-
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				for (FriendCard friendCard : friendCards)
-				{
-					friendCard.clearNotifyCount();
-				}
+				setVisible(false);
+				new LoginController();
 			}
 		});
 
 		rootCon.add(scrollPane, BorderLayout.CENTER);
-		rootCon.add(button, BorderLayout.SOUTH);
+		rootCon.add(logoutButton, BorderLayout.SOUTH);
 		width = getWidth() - 25;
 		height = 70;
 	}
 
 	public void addFriendToContainer(int i)
 	{
-		FriendCard friendCard = (FriendCard) friendCards.get(i);
+		FriendCard friendCard = friendCards.get(i);
 		friendCard.setBounds(-width, i * 80, width, height);
 		friendCard.setToLocation(5, friendCard.getY());
 		myCon.add(friendCard);
@@ -118,5 +116,18 @@ public class FriendListFrame extends JFrame
 			}
 		});
 		timer.start();
+	}
+
+	public static void main(String[] args)
+	{
+		ArrayList<FriendCard> list = new ArrayList<>();
+		list.add(new FriendCard("friend1", "offline"));
+		list.add(new FriendCard("friend2", "offline"));
+		list.add(new FriendCard("friend3", "offline"));
+		list.add(new FriendCard("friend4", "offline"));
+		FriendListFrame frame = new FriendListFrame(new UserInfo("admin", "123456"), list, null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		frame.startAddAnimation();
 	}
 }

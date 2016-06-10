@@ -34,14 +34,11 @@ public class TalkSocket
 		try
 		{
 			socket = new Socket(PathSource.host, SocketPort.talkServerPort);
-			System.out.println("连接成功");
 			ois = new ObjectInputStream(socket.getInputStream());
 			oos = new ObjectOutputStream(socket.getOutputStream());
 
 			talkInfoBuff = new TalkInfoBuff();
-			System.out.println("到这里");
 			oos.writeObject(userInfo);
-			System.out.println("发送成功");
 			receiveMessage = new ReceiveMessage(talkInfoBuff, ois);
 			receiveMessage.start();
 			sendMessage = new SendMessage(oos);

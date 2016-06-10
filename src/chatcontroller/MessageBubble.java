@@ -49,7 +49,7 @@ public class MessageBubble extends JPanel
 			int[] xPoints = { 10, 0, 10 };
 			int[] yPoints = { getHeight() * 1 / 3, getHeight() * 2 / 6, getHeight() * 2 / 3 };
 			int nPoints = xPoints.length;
-			g2d.setColor(new Color(212, 237, 244, 255));
+			g2d.setColor(new Color(235, 234, 207, 255));
 			g2d.fillPolygon(xPoints, yPoints, nPoints);
 			g2d.fill(rr2d);
 		}
